@@ -5,8 +5,9 @@ var fetch = require('node-fetch');
 
 var schema = buildSchema(`
   type Query {
-    user: User
-    stream: Stream
+    hello: String
+    user(id: Int!): User
+    stream(id: Int!): Stream
   }
 
   type User {
@@ -20,13 +21,27 @@ var schema = buildSchema(`
   }
 `);
 
+var fetchUser = (args) => {
+  console.log(args);
+  return fetch("http://tab.do/api/1/users/"+args.id).then(res => res.json()).then(resp => {
+    return resp.user;
+  });
+}
+
 var root = {
   hello: () => {
     return 'Hello world!';
   },
-  user: () => {
-    return fetch("http://tab.do/api/1/users/37").then(res => res.json()).then(resp => {
-      return resp.user;
+  user: fetchUser,
+  stream: (args) => {
+    return fetch("http://tab.do/api/1/streams/"+args.id).then(res => res.json()).then(resp => {
+      var userid = resp.stream.user.id;
+      var s = resp.stream;
+      s.user = (obj) => {
+        console.log("fetch user");
+        return fetchUser({id: userid});
+      }
+      return s;
     });
   }
 };
