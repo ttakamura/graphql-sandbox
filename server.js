@@ -1,10 +1,10 @@
 var express = require('express');
 var graphqlHTTP = require('express-graphql');
 var { buildSchema } = require('graphql');
+var fetch = require('node-fetch');
 
 var schema = buildSchema(`
   type Query {
-    hello: String
     user: User
     stream: Stream
   }
@@ -25,7 +25,9 @@ var root = {
     return 'Hello world!';
   },
   user: () => {
-    return {id: 1, screen_name: 'Tom'};
+    return fetch("http://tab.do/api/1/users/37").then(res => res.json()).then(resp => {
+      return resp.user;
+    });
   }
 };
 
