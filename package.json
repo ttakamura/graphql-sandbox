@@ -1,0 +1,13 @@
+{
+  "name": "graphql-sandbox",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {},
+  "author": "Tatsuya Takamura <takamura@tonchidot.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.15.2",
+    "express-graphql": "^0.6.3",
+    "graphql": "^0.9.1"
+  }
+}
